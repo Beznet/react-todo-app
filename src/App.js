@@ -1,21 +1,58 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
+
+//theres an extra bracket on line 21 thats not on the tut. 
 class App extends Component {
+    constructor(){
+      super();
+      this.state = {
+        message: 'Hello Boyysss!!',
+        newTodo: '',
+        todos: [{
+          title: 'Learn React',
+          done: false
+        }, {
+          title: 'Learn JSX',
+          done: false
+          }]
+        };
+      }
+
+      newTodoChanged(event) {
+        this.setState({
+          newTodo: event.target.value
+        })
+      };
+    
+      formSubmitted(event) {
+        event.preventDefault();
+        this.setState({
+          todos: [...this.state.todos, {
+            title: this.state.newTodo,
+            done: false
+          }]
+        });
+      }
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <h3>{this.state.message}</h3>
+          <form onSubmit={(event) => this.formSubmitted(event)}>
+            <label htmlFor="newTodo"> New Todo </label>
+            <input onChange={(event)=>this.newTodoChanged(event)} id="newTodo" name="newTodo" />
+            <button type = "submit">Add Todo</button>
+          </form>
+
+          <ul>
+            {this.state.todos.map(todo => {
+              return <li key = {todo.title}>{todo.title}</li>
+              })}
+          </ul>
       </div>
     );
   }
-}
+};
 
 export default App;
